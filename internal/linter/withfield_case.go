@@ -14,7 +14,7 @@ func newWithFieldAnalyzer() *logWithFieldAnalyzer {
 	return &logWithFieldAnalyzer{}
 }
 
-var AnalyzerWithFieldCase = &analysis.Analyzer{
+var WithFieldAnalyzer = &analysis.Analyzer{
 	Name: "withfield",
 	Doc:  "reports when first character of a log is in uppercase (it should be in lower)",
 	Run:  newWithFieldAnalyzer().run,

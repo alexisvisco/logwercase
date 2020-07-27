@@ -8,6 +8,6 @@ import (
 
 func main() {
 	multichecker.Main(
-		linter.AnalyzerMessageCase,
-		linter.AnalyzerWithFieldCase)
+		linter.LogMessageAnalyzer,
+		linter.WithFieldAnalyzer)
 }

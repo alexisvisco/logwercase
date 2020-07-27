@@ -14,7 +14,7 @@ func newLogMessageAnalyzer() *logMessageAnalyzer {
 	return &logMessageAnalyzer{}
 }
 
-var AnalyzerMessageCase = &analysis.Analyzer{
+var LogMessageAnalyzer = &analysis.Analyzer{
 	Name: "logmessage",
 	Doc:  "reports when first character of a log is in uppercase (it should be in lower)",
 	Run:  newLogMessageAnalyzer().run,

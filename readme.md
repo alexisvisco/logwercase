@@ -16,8 +16,26 @@ logrus.WithField("hello-world", ...) // ✓ good
 
 It supports logrus and stdlib logger. 
 
-### Installation
+### Installation (cli require go)
 
 ```bash
-GO111MODULE=on go get github.com/alexisvisco/logwercase/cmd/logwercaser@0.2.1
+GO111MODULE=on go get github.com/alexisvisco/logwercase/cmd/logwercaser@0.3
+```
+
+### With golangci
+
+```bash
+cd  /tmp && git clone https://github.com/alexisvisco/logwercase && cd logwercase 
+go build  -o logwercase.so -buildmode=plugin plugin/plugin.go && cp logwercase.so $GOPATH/bin/
+```
+
+In your .golangci.yml add these lines:
+
+```yaml
+linters-settings:
+  custom:
+    logwercase:
+      path: $GOPATH/bin/logwercase.so
+      description: Analyze case of log message and WithField keys
+      original-url: github.com/alexisvisco/logwercase
 ```
