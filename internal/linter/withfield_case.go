@@ -4,6 +4,7 @@ import (
 	"go/ast"
 	"strings"
 
+	"github.com/iancoleman/strcase"
 	"golang.org/x/tools/go/analysis"
 )
 
@@ -44,7 +45,7 @@ func (l logWithFieldAnalyzer) run(pass *analysis.Pass) (interface{}, error) {
 				}
 
 				if kc, isNotKebabCase := isNotKebabCase(arg.Value); isNotKebabCase {
-					pass.Reportf(n.Pos(), "WithField key should be in lower kebab case like that: %q", kc)
+					pass.ReportRangef(arg, "WithField key should be in lower kebab case like that: %q", kc)
 				}
 			}
 
@@ -57,8 +58,8 @@ func (l logWithFieldAnalyzer) run(pass *analysis.Pass) (interface{}, error) {
 
 func isNotKebabCase(key string) (kc string, isKebab bool) {
 	trimmedKey := strings.Trim(key, "\"")
-	kebabCased := strings.ReplaceAll(strings.ToLower(trimmedKey), "_", "-")
-	kebabCased = strings.ReplaceAll(kebabCased, " ", "-")
+
+	kebabCased := strings.Trim(strcase.ToKebab(trimmedKey), "-")
 
 	return kebabCased, trimmedKey != kebabCased
 }

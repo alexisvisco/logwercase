@@ -74,7 +74,7 @@ func (l logMessageAnalyzer) run(pass *analysis.Pass) (interface{}, error) {
 			if _, ok := loggerFunctionNames[function.Sel.Name]; ok &&
 				l.isLoggerCall(callExpr) &&
 				l.isCapitalized(callExpr.Args) {
-				pass.Reportf(n.Pos(), "Log message should be lower cased lie that: %q",
+				pass.ReportRangef(callExpr.Args[0], "Log message should be lower cased like that: %q",
 					l.toLowerCase(callExpr.Args))
 			}
 			return true
