@@ -6,6 +6,6 @@ import (
 
 func main() {
 	logrus.Print("Hello world")
-	logrus.WithField("hey", "test").
+	logrus.WithField("Hey", "test").
 		Println("Hello dorw")
 }

@@ -8,10 +8,16 @@ import (
 	"golang.org/x/tools/go/analysis"
 )
 
-var Analyzer = &analysis.Analyzer{
-	Name: "logwercaser",
+type logMessageAnalyzer struct{}
+
+func newLogMessageAnalyzer() *logMessageAnalyzer {
+	return &logMessageAnalyzer{}
+}
+
+var AnalyzerMessageCase = &analysis.Analyzer{
+	Name: "logmessage",
 	Doc:  "reports when first character of a log is in uppercase (it should be in lower)",
-	Run:  run,
+	Run:  newLogMessageAnalyzer().run,
 }
 
 var loggerTriggerName = map[string]bool{
@@ -52,7 +58,7 @@ var loggerFunctionNames = map[string]bool{
 	"Fatalln":   true,
 }
 
-func run(pass *analysis.Pass) (interface{}, error) {
+func (l logMessageAnalyzer) run(pass *analysis.Pass) (interface{}, error) {
 	for _, file := range pass.Files {
 		ast.Inspect(file, func(n ast.Node) bool {
 			callExpr, ok := n.(*ast.CallExpr)
@@ -66,9 +72,10 @@ func run(pass *analysis.Pass) (interface{}, error) {
 			}
 
 			if _, ok := loggerFunctionNames[function.Sel.Name]; ok &&
-				isLoggerCall(callExpr) &&
-				isCapitalized(callExpr.Args) {
-				pass.Reportf(function.Pos(), "Log message should be lower cased: %s", toLowerCase(callExpr.Args))
+				l.isLoggerCall(callExpr) &&
+				l.isCapitalized(callExpr.Args) {
+				pass.Reportf(n.Pos(), "Log message should be lower cased lie that: %q",
+					l.toLowerCase(callExpr.Args))
 			}
 			return true
 		})
@@ -77,7 +84,7 @@ func run(pass *analysis.Pass) (interface{}, error) {
 	return nil, nil
 }
 
-func isLoggerCall(expr *ast.CallExpr) bool {
+func (l logMessageAnalyzer) isLoggerCall(expr *ast.CallExpr) bool {
 	s, ok := expr.Fun.(*ast.SelectorExpr)
 	if ok {
 		if _, ok := loggerTriggerName[s.Sel.Name]; ok {
@@ -92,7 +99,7 @@ func isLoggerCall(expr *ast.CallExpr) bool {
 				}
 			}
 			if e, ok := s.X.(*ast.CallExpr); ok {
-				return isLoggerCall(e)
+				return l.isLoggerCall(e)
 			}
 			return false
 		}
@@ -101,7 +108,7 @@ func isLoggerCall(expr *ast.CallExpr) bool {
 	return false
 }
 
-func isCapitalized(args []ast.Expr) bool {
+func (l logMessageAnalyzer) isCapitalized(args []ast.Expr) bool {
 	if len(args) == 0 {
 		return false
 	}
@@ -119,7 +126,7 @@ func isCapitalized(args []ast.Expr) bool {
 	return false
 }
 
-func toLowerCase(args []ast.Expr) string {
+func (l logMessageAnalyzer) toLowerCase(args []ast.Expr) string {
 	if len(args) == 0 {
 		return ""
 	}

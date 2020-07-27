@@ -1,11 +1,13 @@
 package main
 
 import (
-	"golang.org/x/tools/go/analysis/singlechecker"
+	"golang.org/x/tools/go/analysis/multichecker"
 
 	"github.com/alexisvisco/logwercase/internal/linter"
 )
 
 func main() {
-	singlechecker.Main(linter.Analyzer)
+	multichecker.Main(
+		linter.AnalyzerMessageCase,
+		linter.AnalyzerWithFieldCase)
 }
