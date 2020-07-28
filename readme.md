@@ -25,8 +25,12 @@ GO111MODULE=on go get github.com/alexisvisco/logwercase/cmd/logwercaser@0.3
 ### With golangci
 
 ```bash
-cd  /tmp && git clone https://github.com/alexisvisco/logwercase && cd logwercase 
-go build  -o logwercase.so -buildmode=plugin plugin/plugin.go && cp logwercase.so $GOPATH/bin/
+cd  /tmp \
+    && git clone https://github.com/alexisvisco/logwercase \
+    && cd logwercase \
+    && go build -o logwercase.so -buildmode=plugin plugin/plugin.go \
+    && cp logwercase.so /home/$USER/go/bin/
+    && echo "logwercase.so created and set in " /home/$USER/go/bin/logwercase.so
 ```
 
 In your .golangci.yml add these lines:
@@ -35,7 +39,9 @@ In your .golangci.yml add these lines:
 linters-settings:
   custom:
     logwercase:
-      path: $GOPATH/bin/logwercase.so
+      path: /home/$USER/go/bin/logwercase.so
       description: Analyze case of log message and WithField keys
       original-url: github.com/alexisvisco/logwercase
 ```
+
+Change $USER with your user
