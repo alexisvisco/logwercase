@@ -1,4 +1,4 @@
-## Logwercaser
+## Logwercase
 
 Logwercase is a Golang linter that report:
  - use of uppercase for message in log printer functions
@@ -19,17 +19,18 @@ It supports logrus and stdlib logger.
 ### Installation (cli require go)
 
 ```bash
-GO111MODULE=on go get github.com/alexisvisco/logwercase/cmd/logwercaser@0.3.1
+GO111MODULE=on go get github.com/alexisvisco/logwercase/cmd/logwercase@0.3.2
 ```
 
 ### With golangci
 
 ```bash
 cd  /tmp \
+    && rm -rf logwercase \
     && git clone https://github.com/alexisvisco/logwercase \
     && cd logwercase \
     && go build -o logwercase.so -buildmode=plugin plugin/plugin.go \
-    && cp logwercase.so /home/$USER/go/bin/
+    && cp logwercase.so /home/$USER/go/bin/ \
     && echo "logwercase.so created and set in " /home/$USER/go/bin/logwercase.so
 ```
 
