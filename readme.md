@@ -19,7 +19,7 @@ It supports logrus and stdlib logger.
 ### Installation (cli require go)
 
 ```bash
-GO111MODULE=on go get github.com/alexisvisco/logwercase/cmd/logwercaser@0.3
+GO111MODULE=on go get github.com/alexisvisco/logwercase/cmd/logwercaser@0.3.1
 ```
 
 ### With golangci
